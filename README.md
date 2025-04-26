@@ -68,4 +68,3 @@ mysql -u root -p < /sql/pichub-user-insert.sql
 3. 确认配置文件中连接信息正确
 4. 确保端口无冲突
 
-如需更多帮助，请在项目仓库提交issue。
