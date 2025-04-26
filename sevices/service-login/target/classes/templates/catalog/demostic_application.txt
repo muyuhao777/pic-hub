@@ -1,0 +1,16 @@
+相机	camera
+电脑	computer
+吹风机	hair+dryer
+电熨斗	iron
+灯	light
+手机	Mobile+phone
+烤箱	oven
+锅	pot
+收音机	radio
+冰箱	refrigerator
+音响	sound
+电话机	Telephone
+电视机	television
+打字机	typewriter
+吸尘器	vacuum+cleaner
+洗衣机	washing+machine

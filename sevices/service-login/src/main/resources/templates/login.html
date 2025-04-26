@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>用户登录</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            background-color: #f8f9fa;
+        }
+        .container.right-panel-active {
+            max-width: 100%;
+            padding: 0;
+        }
+        .container_from {
+            max-width: 500px;
+            margin: 50px auto;
+            padding: 30px;
+            background: #fff;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+        .from_title {
+            text-align: center;
+            margin-bottom: 30px;
+            color: #333;
+        }
+        .input {
+            width: 100%;
+            padding: 12px 15px;
+            margin-bottom: 5px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+        .input:focus {
+            border-color: #007bff;
+            outline: none;
+        }
+        .btn {
+            width: 100%;
+            padding: 12px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        .btn:hover {
+            background-color: #0069d9;
+        }
+        .imsg {
+            display: block;
+            margin-bottom: 15px;
+            font-size: 14px;
+            color: #dc3545;
+        }
+        .alert {
+            margin-top: 20px;
+            padding: 10px;
+            border-radius: 5px;
+        }
+        .navbar {
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+    </style>
+</head>
+<body>
+<!-- 导航栏 -->
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <div class="container">
+        <a class="navbar-brand" href="#">艺术图像分类检索平台</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav me-auto">
+                <li class="nav-item">
+                    <a class="nav-link" th:href="@{/login/index}">首页</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link active" th:href="@{/login/page}">登录</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" th:href="@{/pic/search}">搜索图片</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" th:href="@{/pic/insert}">添加图片</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+<div class="container right-panel-active">
+    <div class="container_from container--signin">
+        <form th:action="@{/login/page}" method="post" id="post_form" class="form-signin">
+            <h2 class="from_title">用户登录</h2>
+            <input type="text" name="u_id" placeholder="账号" class="input" id="inun" onblur="formValiad.checkInUserEmail()"/>
+            <span class="imsg" id="inUserName">请输入账号</span>
+            <input type="password" name="u_pwd" placeholder="密码" class="input" id="inupwd" onblur="formValiad.checkUserInPassword()"/>
+            <span class="imsg" id="inUserPwd">请输入密码</span>
+            <button type="submit" class="btn">登录</button>
+
+            <!-- 添加Thymeleaf错误消息显示 -->
+            <div th:if="${param.error}" class="alert alert-danger">
+                用户名或密码错误
+            </div>
+            <div th:if="${param.logout}" class="alert alert-success">
+                您已成功登出
+            </div>
+        </form>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+    // 表单验证对象
+    var formValiad = {
+        checkInUserEmail: function() {
+            var email = document.getElementById('inun').value;
+            var msg = document.getElementById('inUserName');
+            if (email === '') {
+                msg.textContent = '请输入账号';
+                return false;
+            }
+            msg.textContent = '';
+            return true;
+        },
+        checkUserInPassword: function() {
+            var pwd = document.getElementById('inupwd').value;
+            var msg = document.getElementById('inUserPwd');
+            if (pwd === '') {
+                msg.textContent = '请输入密码';
+                return false;
+            }
+            msg.textContent = '';
+            return true;
+        }
+    };
+
+    // 表单提交前验证
+    document.getElementById('post_form').onsubmit = function() {
+        return formValiad.checkInUserEmail() && formValiad.checkUserInPassword();
+    };
+</script>
+</body>
+</html>

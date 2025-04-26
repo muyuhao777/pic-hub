@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="CompilerConfiguration">
+    <annotationProcessing>
+      <profile name="Maven default annotation processors profile" enabled="true">
+        <sourceOutputDir name="target/generated-sources/annotations" />
+        <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
+        <outputRelativeToContentRoot value="true" />
+        <module name="model" />
+        <module name="common-jwt" />
+        <module name="service-login" />
+        <module name="gateway" />
+        <module name="service-pic" />
+      </profile>
+    </annotationProcessing>
+  </component>
+  <component name="JavacSettings">
+    <option name="ADDITIONAL_OPTIONS_OVERRIDE">
+      <module name="common-jwt" options="-parameters" />
+      <module name="gateway" options="-parameters" />
+      <module name="model" options="-parameters" />
+      <module name="pichub" options="" />
+      <module name="service-login" options="-parameters" />
+      <module name="service-pic" options="-parameters" />
+      <module name="sevices" options="" />
+    </option>
+  </component>
+</project>

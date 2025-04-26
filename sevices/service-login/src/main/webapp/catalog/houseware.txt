@@ -1,0 +1,11 @@
+浴缸	Bathtub
+床	bed
+长椅	bench
+碗	bowl
+挂钟	clock
+枕头	pillow
+摇椅	Rocking+chair
+缝纫机	Sewing+machine
+沙发	sofa
+锅铲	Spatula
+马桶	Toilet

@@ -1,0 +1,12 @@
+靴子	boots
+手套	gloves
+帽子	hat
+牛仔裤	jeans
+项链	necklace
+围巾	scarf
+鞋子	Shoes
+裙子	skirt
+袜子	sock
+墨镜	sunglasses
+毛衣	Sweater
+手表	Watch

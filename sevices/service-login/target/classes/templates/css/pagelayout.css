@@ -1,0 +1,16 @@
+.pagelayout {
+    width: 100%;
+    height: auto;
+
+    display: grid;
+    grid:
+    "leader leader leader"
+    "treeside picside ." 1fr
+    ". . ." 0px
+    / 16% 1fr 0px;
+    gap: 8px;
+}
+
+.leader { grid-area: leader;height: 50px}
+.treeside { grid-area: treeside;background-color: white;margin-left: 10px;margin-right: 10px;border-radius: 25px}/*background: url("./../pic/treebk.PNG");background-repeat:no-repeat;}*/
+.picside { grid-area: picside;background-color: darkgray;border-radius: 25px}

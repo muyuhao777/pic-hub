@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>图片搜索</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        .picture-card {
+            transition: transform 0.3s;
+            margin-bottom: 20px;
+        }
+        .picture-card:hover {
+            transform: scale(1.03);
+        }
+        .pagination {
+            justify-content: center;
+            margin-top: 30px;
+        }
+        .card-actions {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+<!-- 导航栏 -->
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <div class="container">
+        <a class="navbar-brand" href="#">艺术图像分类检索平台</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav">
+                <li class="nav-item">
+                    <a class="nav-link" th:href="@{http://localhost/login/index}">首页</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" th:href="@{http://localhost/login/page}">登录</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link active" th:href="@{http://localhost/pic/search}">搜索图片</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" th:href="@{http://localhost/pic/insert}">添加图片</a>
+                </li>
+<!--                <li class="nav-item">-->
+<!--                    <a class="nav-link" th:href="@{/pic/update}">修改图片</a>-->
+<!--                </li>-->
+            </ul>
+        </div>
+    </div>
+</nav>
+
+<div class="container mt-4">
+    <!-- 搜索表单 -->
+    <form class="row g-3 mb-4" th:action="@{/pic/search}" method="get">
+        <div class="col-md-3">
+            <label class="form-label">风格</label>
+            <input type="text" class="form-control" name="styleName"
+                   th:value="${queryParams.styleName}">
+        </div>
+        <div class="col-md-3">
+            <label class="form-label">内容</label>
+            <input type="text" class="form-control" name="contentTypeName"
+                   th:value="${queryParams.contentTypeName}">
+        </div>
+        <div class="col-md-3">
+            <label class="form-label">地区</label>
+            <input type="text" class="form-control" name="regionName"
+                   th:value="${queryParams.regionName}">
+        </div>
+        <div class="col-md-3">
+            <label class="form-label">色调范围</label>
+            <select class="form-select" name="hueRange" onchange="setHueValues(this)">
+                <option value="">全部色调</option>
+                <!-- 使用Thymeleaf的#objects工具类和null安全表达式 -->
+                <option value="warm"
+                        th:selected="${#objects.nullSafe(queryParams.minHue, 0) == 0
+                          and #objects.nullSafe(queryParams.maxHue, 360) == 180}">
+                    <div class="hue-option">
+                        <div class="hue-color-box" style="background: linear-gradient(to right, #ff0000, #ffff00);"></div>
+                        暖色 (0°-180°)
+                    </div>
+                </option>
+                <option value="cool"
+                        th:selected="${#objects.nullSafe(queryParams.minHue, 0) == 180
+                          and #objects.nullSafe(queryParams.maxHue, 360) == 360}">
+                    <div class="hue-option">
+                        <div class="hue-color-box" style="background: linear-gradient(to right, #00ffff, #0000ff);"></div>
+                        冷色 (180°-360°)
+                    </div>
+                </option>
+            </select>
+            <input type="hidden" name="minHue" th:value="${queryParams.minHue}">
+            <input type="hidden" name="maxHue" th:value="${queryParams.maxHue}">
+        </div>
+        <div class="col-md-3 d-flex align-items-end">
+            <button type="submit" class="btn btn-primary">搜索</button>
+        </div>
+    </form>
+
+    <!-- 图片列表 -->
+    <div class="row">
+        <div class="col-md-4 col-lg-3 picture-card" th:each="pic : ${pictures}">
+            <div class="card h-100">
+                <img th:src="'http://localhost:9000/' + ${pic.getPStr()}"
+                     class="card-img-top"
+                     alt="图片">
+
+                <div class="card-body">
+                    <h5 class="card-title" th:text="${'ID: ' + pic.getId()}"></h5>
+                    <p class="card-text">
+                        <span class="badge bg-secondary"
+                              th:text="${'风格: ' + pic.styleTypeId}"></span>
+                        <span class="badge bg-info"
+                              th:text="${'内容: ' + pic.contentTypeId}"></span>
+                    </p>
+                    <div class="card-actions">
+                        <a th:href="@{'/pic/update/' + ${pic.id}}" class="btn btn-sm btn-warning">编辑</a>
+                        <form th:action="@{'/pic/delete/' + ${pic.id}}" method="post">
+                            <button type="submit" class="btn btn-sm btn-danger"
+                                    onclick="return confirm('确定要删除这张图片吗？')">删除</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 分页控件 -->
+    <nav th:if="${pageInfo.totalPages > 1}">
+        <ul class="pagination">
+            <!-- 上一页 -->
+            <li class="page-item" th:classappend="${!pageInfo.hasPrevious()} ? 'disabled'">
+                <a class="page-link" th:href="@{${pageInfo.getPageUrl(pageInfo.getCurrent()-1, queryParams)}}">
+                    &laquo;
+                </a>
+            </li>
+
+            <!-- 页码 -->
+            <li th:each="i : ${#numbers.sequence(1, pageInfo.totalPages)}"
+                class="page-item" th:classappend="${i == pageInfo.getCurrent()} ? 'active'">
+                <a class="page-link" th:href="@{${pageInfo.getPageUrl(i, queryParams)}}"
+                   th:text="${i}"></a>
+            </li>
+
+            <!-- 下一页 -->
+            <li class="page-item" th:classappend="${!pageInfo.hasNext()} ? 'disabled'">
+                <a class="page-link" th:href="@{${pageInfo.getPageUrl(pageInfo.getCurrent()+1, queryParams)}}">
+                    &raquo;
+                </a>
+            </li>
+        </ul>
+    </nav>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+    function setHueValues(selectElement) {
+        const form = selectElement.closest('form');
+        const minHueInput = form.querySelector('input[name="minHue"]');
+        const maxHueInput = form.querySelector('input[name="maxHue"]');
+
+        if (selectElement.value === 'warm') {
+            minHueInput.value = '0';
+            maxHueInput.value = '180';
+        } else if (selectElement.value === 'cool') {
+            minHueInput.value = '180';
+            maxHueInput.value = '360';
+        } else {
+            minHueInput.value = '';
+            maxHueInput.value = '';
+        }
+    }
+
+    // Initialize hue values when page loads
+    document.addEventListener('DOMContentLoaded', function() {
+        const form = document.querySelector('form');
+        const minHue = form.querySelector('input[name="minHue"]').value;
+        const maxHue = form.querySelector('input[name="maxHue"]').value;
+        const hueSelect = form.querySelector('select[name="hueRange"]');
+
+        if (minHue === '0' && maxHue === '180') {
+            hueSelect.value = 'warm';
+        } else if (minHue === '180' && maxHue === '360') {
+            hueSelect.value = 'cool';
+        }
+    });
+</script>
+</body>
+</html>

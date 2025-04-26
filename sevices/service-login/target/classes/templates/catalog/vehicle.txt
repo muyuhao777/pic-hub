@@ -1,0 +1,12 @@
+飞机	aircraft
+自行车	bicycle
+轿车	car
+马车	carriage
+消防车	Fire+truck
+热气球	hot+air+balloon
+摩托车	motorcycle
+赛车	Racing+car
+帆船	sailboat
+潜艇	submarine
+坦克	tank
+火车	train

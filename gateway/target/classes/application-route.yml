@@ -1,0 +1,16 @@
+spring:
+  cloud:
+    gateway:
+      routes:
+        - id: login-route
+          uri: lb://service-login
+          predicates:
+            - Path=/login/**
+        - id: pic-route
+          uri: lb://service-pic
+          predicates:
+            - Path=/pic/**
+#      default-filters:
+#        - name: AuthorFilter
+#          args:
+#            whiteList: /login

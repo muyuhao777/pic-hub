@@ -1,0 +1,34 @@
+.c_img {
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    padding: 5px;
+    height: 200px;
+    width: 200px;
+}
+.c_b_img{
+    background-color: darkgray;
+    border-color: white;
+    color:darkgray;
+    margin:5px;
+    padding: 5px;
+    outline:none;
+}
+.content_img{
+    height:500px;
+    border-color:lightgray;
+}
+.center-btn{
+    margin-left:50%;
+    margin-top:20%;
+}
+.input_len{
+    width:50px;
+}
+.page_con{
+    margin-left:75%;
+    margin-top:20px;
+}
+.add_con{
+    margin-left:5%;
+    margin-top:70px;
+}
