@@ -6,54 +6,25 @@ Pic-Hub 是一个用于存储和检索艺术图像的平台，支持用户通过
 
 - Java 17+
 - MySQL 8.0+
-- Redis 7.0+
+- Redis 
 - MinIO
-- Nacos 2.0+
+- Nacos 
 
 ## 安装指南
 
 ### 1. 安装 Nacos
 [Nacos 官网](https://nacos.io/zh-cn/)  
-下载并安装 Nacos 服务器(推荐2.0.0及以上版本):
-```bash
-# Linux/Mac 示例
-wget https://github.com/alibaba/nacos/releases/download/2.0.3/nacos-server-2.0.3.tar.gz
-tar -zxvf nacos-server-2.0.3.tar.gz
-cd nacos/bin
-sh startup.sh -m standalone
-```
 
 ### 2. 安装 Redis
 [Redis 官网](https://redis.io/)  
-安装 Redis (推荐7.0及以上版本):
-```bash
-# Ubuntu/Debian 系统
-sudo apt update
-sudo apt install redis-server
-sudo systemctl enable redis-server
-sudo systemctl start redis-server
-```
 
-### 3. 配置 Redis Sentinel
-Redis Sentinel 已包含在 Redis 安装包中，通过编辑配置文件进行配置:
-```bash
-sudo nano /etc/redis/sentinel.conf
-```
-至少配置以下参数:
-```
-port 26379
-sentinel monitor mymaster 127.0.0.1 6379 2
-sentinel down-after-milliseconds mymaster 5000
-sentinel failover-timeout mymaster 60000
-```
+### 3. 下载 Sentinel 控制台
+Sentinel 提供了一个独立的控制台模块，用于管理和监控规则。您可以从 Sentinel 的官方 GitHub 仓库下载最新版本的控制台代码：
+[Sentinel 官网](https://github.com/alibaba/Sentinel/releases/tag/1.8.6)
 
 ### 4. 安装 MinIO
 [MinIO 官网](https://min.io/)  
-下载安装 MinIO 并创建名为 "pics" 的存储桶:
-```bash
-wget https://dl.min.io/server/minio/release/linux-amd64/minio
-chmod +x minio
-./minio server /data --console-address ":9001"
+下载安装 MinIO 并创建名为 "pics" 的存储桶
 
 # 安装后访问Web控制台(默认端口9001)
 # 创建名为 "pics" 的存储桶
@@ -62,7 +33,9 @@ chmod +x minio
 ### 5. 数据库初始化
 执行 sql 文件夹中的脚本初始化数据库结构:
 ```bash
-mysql -u root -p < /path/to/sql/init.sql
+mysql -u root -p < /sql/pichub-login.sql
+mysql -u root -p < /sql/pichub-pic.sql
+mysql -u root -p < /sql/pichub-user-insert.sql
 ```
 
 ### 6. Nacos 配置
@@ -72,7 +45,7 @@ mysql -u root -p < /path/to/sql/init.sql
 
 ### 7. 修改项目配置
 更新以下配置文件中的环境设置:
-- 各微服务中的 `application.yml`
+- 各微服务中的 `application.yml`或`application.properties`
 - 网关配置文件
 - 修改数据库连接、Redis地址、MinIO端点等
 
@@ -84,16 +57,11 @@ mysql -u root -p < /path/to/sql/init.sql
 4. 数据库
 5. 微服务和网关
 
-```bash
-# 启动Spring Boot应用示例
-cd gateway && mvn spring-boot:run
-cd ../service1 && mvn spring-boot:run
-# 其他服务同理
-```
-
 ## 项目结构
+- `common-jwt`: JWT配置
 - `gateway/`: API网关服务
-- `service1/`, `service2/`: 微服务模块
+- `model/`: 类定义
+- `services/`: 微服务模块
 - `sql/`: 数据库初始化脚本
 - `nacos-config/`: Nacos配置文件
 
