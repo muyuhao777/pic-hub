@@ -13,10 +13,10 @@ Pic-Hub 是一个用于存储和检索艺术图像的平台，支持用户通过
 ## 安装指南
 
 ### 1. 安装 Nacos
-[Nacos 官网](https://nacos.io/zh-cn/)  
+[Nacos 官网](https://github.com/alibaba/nacos/releases)
 
 ### 2. 安装 Redis
-[Redis 官网](https://redis.io/)  
+[Redis 官网](https://github.com/tporadowski/redis/releases)
 
 ### 3. 下载 Sentinel 控制台
 Sentinel 提供了一个独立的控制台模块，用于管理和监控规则。您可以从 Sentinel 的官方 GitHub 仓库下载最新版本的控制台代码：
